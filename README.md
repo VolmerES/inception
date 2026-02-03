@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by <jdelorme>.*
+*This project has been created as part of the 42 curriculum by jdelorme.*
 
 # Inception
 
@@ -53,7 +53,6 @@ Docker volumes are used to store the WordPress database and website files, ensur
 
 ### Requirements
 
-- Linux virtual machine
 - Docker
 - Docker Compose
 - Make
@@ -64,3 +63,6 @@ Docker volumes are used to store the WordPress database and website files, ensur
    ```bash
    git clone <repository_url>
    cd inception
+
+### Makefile options
+	
