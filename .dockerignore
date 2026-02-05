@@ -1,0 +1,19 @@
+# Git
+.git
+.gitignore
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Secrets and Env
+secrets/
+srcs/.env
+.env
+**/*.env
+
+# Docker
+docker-compose.override.yml
+
+# Checkpoints/Logs
+*.log
