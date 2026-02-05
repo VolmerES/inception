@@ -1,20 +1,29 @@
-FROM debian:bookworm
+FROM debian:bookworm-slim
 
-RUN apt update && apt install -y nginx openssl && rm -rf /var/lib/apt/lists/*
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN mkdir -p /etc/nginx/ssl
+RUN apt-get update && apt-get install -y --no-install-recommends \
+bash \
+nginx \
+openssl \
+ca-certificates \
+gettext-base \
+&& rm -rf /var/lib/apt/lists/*
 
-# Certificado autofirmado
-RUN openssl req -x509 -nodes -days 365 \
-    -newkey rsa:2048 \
-    -keyout /etc/nginx/ssl/inception.key \
-    -out /etc/nginx/ssl/inception.crt \
-    -subj "/C=ES/ST=Madrid/L=Madrid/O=42/OU=Student/CN=localhost"
+RUN mkdir -p /etc/nginx/ssl \
+             /etc/nginx/templates
+#Carpeta donde guardamos certificado y  key
 
-# Config de nginx
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY conf/nginx.conf /etc/nginx/templates/nginx.conf
+#Copiamos un template porque nginx no interpreta variables de entorno
+
+COPY tools/generate_ssl.sh /usr/local/bin/entrypoint.sh
+#Script que gener cer si falta + crea nginx.conf +  arranca NGINX
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 443
+#Puerto HTTPS
 
-CMD ["nginx", "-g", "daemon off;"]
-
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+#Proceso incial de contenedor (PID1)

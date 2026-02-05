@@ -1,4 +1,4 @@
-#Imagen base
+#cd awdmnlkamndklmakdmlkamn wwdm,malkdmn lkamnwkljImagen base
 FROM debian:bookworm-slim
 
 #Evitar preguntas interactivas
@@ -18,7 +18,7 @@ curl \
 ca-certificates \
 && rm -rf /var/lib/apt/lists/*
 
-COPY conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
+COPY conf/www.conf /etc/php/8.2/pool.d/www.conf
 #Copia y reemplaza la configuracion por defecto de PHP
 
 COPY tools/setup_wp.sh /usr/local/bin/setup_wp.sh

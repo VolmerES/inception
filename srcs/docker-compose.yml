@@ -1,58 +1,79 @@
-version: '3.8'
-
+#Definiciones de los contenedores de servicios
 services:
-  nginx:
-    build: ./requirements/nginx
-    container_name: inception-nginx
-    depends_on:
-      - wordpress
-    ports:
-      - "443:443"
-    networks:
-      - inception_network
-    volumes:
-      - wordpress_data:/var/www/html
-    restart: always
-
-  wordpress:
-    build: ./requirements/wordpress
-    container_name: inception-wordpress
-    depends_on:
-      - mariadb
-    env_file:
-      - .env
-    networks:
-      - inception_network
-    volumes:
-      - wordpress_data:/var/www/html
-    restart: always
-
   mariadb:
-    build: ./requirements/mariadb
-    container_name: inception-mariadb
+    container_name: mariadb
+    build:
+      context: requirements/mariadb
     env_file:
-      - .env
-    networks:
-      - inception_network
+        - .env
+    secrets:
+        - db_root_password
+        - db_password
     volumes:
-      - mariadb_data:/var/lib/mysql
-    restart: always
+        - mariadb_data:/var/lib/mysql
+    networks:
+        - inception
+    restart: unless-stopped
+  wordpress:
+    container_name: wordpress
+    build:
+      context: requirements/wordpress
+    env_file:
+        - .env
+    secrets:
+        - db_password
+        - wp_admin_password
+        - wp_user_password
+    volumes:
+        - wordpress_data:/var/www/html
+    networks:
+        - inception
+    depends_on:
+        - mariadb
+    restart: unless-stopped
+  nginx:
+    container_name: nginx
+    build:
+      context: requirements/nginx
+    env_file:
+        - .env
+    ports:
+        - "443:443"
+    volumes:
+        - wordpress_data:/var/www/html:ro
+    networks:
+        - inception
+    depends_on:
+        - wordpress
+    restart: unless-stopped
 
-networks:
-  inception_network:
-
+#Definiciones para volumenes
 volumes:
+  mariadb_data:
+    driver: local       #Gestionado por el host
+    driver_opts:        #Opciones de gestión
+      type: none        #Tipo de filesystem
+      o: bind           #Enlazar carpeta real del host
+      device: /home/jdelorme/data/mariadb
   wordpress_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /Users/volmer/data/wordpress
+      device: /home/jdelorme/data/wordpress
+#Red interna de docker
+networks:
+  inception:
+    driver: bridge      #Red virtual privada
 
-  mariadb_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /Users/volmer/data/mariadb
+#Secretos de docker
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  wp_admin_password:
+    file: ../secrets/wp_user_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
+  wp_user_password:
+    file: ../secrets/wp_user_password.txt
 

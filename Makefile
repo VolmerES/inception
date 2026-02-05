@@ -1,23 +1,48 @@
-NAME = inception
 COMPOSE_FILE = srcs/docker-compose.yml
+
+DC = docker compose -f $(COMPOSE_FILE)
+
+DATA_DIR = /home/jdelorme/data
+#Directorio de los volumenes persistentes
+
+.PHONY: all upp down build start stop restart clean fclean re logs ps
 
 all: up
 
-up:
-	docker compose -f $(COMPOSE_FILE) up -d --build
+
+up: mkdir_data
+	$(DC) up -d
+
+mkdir_data:
+	mkdir -p $(DATA_DIR)/mariadb
+	mkdir -p $(DATA_DIR)/wordpress
+
+
+build:
+	$(DC) build
 
 down:
-	docker compose -f $(COMPOSE_FILE) down
+	$(DC) down
 
-clean: down
-	docker system prune -f
+start:
+	$(DC) start
 
-fclean: down
-	docker compose -f $(COMPOSE_FILE) down -v
-	docker system prune -af
-	docker volume prune -f || true
+stop:
+	$(DC) stop
 
-re: fclean up
+restart:
+	$(DC) down up
 
-.PHONY: all up down clean fclean re
+logs:
+	$(DC) logs -f
 
+ps:
+	$(DC) ps
+
+clean:
+	$(DC) down --rmi local -v --remove-orphans
+
+fclean: clean
+	sudo rm -rf $(DATA_DIR)
+
+re: fclean all
