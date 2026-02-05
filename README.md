@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by jdelorme.*
+_This project has been created as part of the 42 curriculum by jdelorme._
 
 # Inception
 
@@ -9,6 +9,7 @@ Inception is a system administration project whose objective is to design, confi
 The project is executed inside a virtual machine and focuses on service isolation, secure communication, data persistence, and reproducibility. All services are containerized and connected through a private Docker network, with a single entry point exposed to the outside.
 
 The infrastructure includes:
+
 - An NGINX service acting as the only public entry point, configured with TLS.
 - A WordPress service running with PHP-FPM only.
 - A MariaDB service providing the database backend.
@@ -63,6 +64,22 @@ Docker volumes are used to store the WordPress database and website files, ensur
    ```bash
    git clone <repository_url>
    cd inception
+   ```
 
-### Makefile options
-	
+### Makefile commands
+
+The project includes a Makefile to automate common tasks:
+
+- **make all**: Alias for `make up`. Builds and starts the application.
+- **make up**: Prepares the data directories and launches the containers in detached mode.
+- **make mkdir_data**: Creates the required directories for MariaDB and WordPress persistence (`/home/jdelorme/data`).
+- **make build**: Builds the Docker images defined in the `docker-compose.yml` file.
+- **make down**: Stops and removes the containers, networks, and volumes defined in the compose file.
+- **make start**: Starts the containers if they were previously created.
+- **make stop**: Stops the running containers without removing them.
+- **make restart**: Stops and then restarts the services.
+- **make logs**: Displays real-time logs from the running containers.
+- **make ps**: Lists the status of the containers managed by the project.
+- **make clean**: Stops the containers and removes associated images, volumes, and orphan containers.
+- **make fclean**: Performs a full clean (runs `clean`) and additionally removes the local data directory (requires sudo).
+- **make re**: Rebuilds the entire application from scratch (runs `fclean` followed by `all`).
