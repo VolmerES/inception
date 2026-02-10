@@ -18,7 +18,7 @@ The infrastructure includes:
 
 All images are built from custom Dockerfiles, following the constraints defined in the Inception subject.
 
-## Project Overview and Design Choices
+## Project description
 
 This project relies on Docker to provide lightweight virtualization and clear separation of concerns between services. Each component runs in its own container and communicates with others through controlled interfaces.
 
@@ -83,3 +83,19 @@ The project includes a Makefile to automate common tasks:
 - **make clean**: Stops the containers and removes associated images, volumes, and orphan containers.
 - **make fclean**: Performs a full clean (runs `clean`) and additionally removes the local data directory (requires sudo).
 - **make re**: Rebuilds the entire application from scratch (runs `fclean` followed by `all`).
+
+## Resources
+
+### References
+
+- [Docker Documentation](https://docs.docker.com/)
+- [Docker Compose Documentation](https://docs.docker.com/compose/)
+- [NGINX Documentation](https://nginx.org/en/docs/)
+- [WordPress Codex](https://codex.wordpress.org/)
+- [MariaDB Knowledge Base](https://mariadb.com/kb/en/)
+
+### AI Usage
+
+This project utilized Artificial Intelligence tools for the following tasks:
+
+- **Code validation**: Checking for potential configuration issues in `docker-compose.yml` and `Makefile`.
