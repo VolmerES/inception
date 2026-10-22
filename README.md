@@ -2,6 +2,8 @@ _This project has been created as part of the 42 curriculum by jdelorme._
 
 # Inception
 
+**Grade: 100/100**
+
 ## Description
 
 Inception is a system administration project whose objective is to design, configure, and deploy a secure web infrastructure using Docker and Docker Compose.
@@ -62,7 +64,7 @@ Docker volumes are used to store the WordPress database and website files, ensur
 
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/VolmerES/inception.git
    cd inception
    ```
 
