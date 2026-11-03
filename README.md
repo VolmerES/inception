@@ -101,3 +101,7 @@ The project includes a Makefile to automate common tasks:
 This project utilized Artificial Intelligence tools for the following tasks:
 
 - **Code validation**: Checking for potential configuration issues in `docker-compose.yml` and `Makefile`.
+
+## License
+
+Released under the [MIT License](LICENSE). © 2026 Juan Bautista Delorme Pinedo.
